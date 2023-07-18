@@ -68,7 +68,7 @@ def read_file(filename):
 
     return df
         
-def print_line_graph(data, filename, col_title = 'RDF',
+def print_line_graph(df, filename, col_title = 'RDF',
                      xlabel = 'Distance', ylabel = 'RDF',
                      title = 'RDF', maxrdf = 3.0):
     '''(DataFrame, str, int, str, str, float)
@@ -109,6 +109,7 @@ def list_of_xvg(pattern):
     print('I\'m using pattern: ', pattern)
     allfiles = os.listdir()
     rdf_files = list(filter(lambda fn: pattern in fn, allfiles))
+    #print(rdf_files)
 
     return rdf_files
 
@@ -120,9 +121,16 @@ def line_graphs(xvg, xtit = 'distance', ytit = 'RDF', maxrdf = 1, cols = [0,1]):
     titles and columns used.
     '''
     xvg_files = list_of_xvg(xvg)
-    for file in xvg_files:
-        data = read_file(xvg)
-        #print_line_graph(data,
+    print(xvg_files)
+
+    #no need to add number, it's assumed that xvg are already
+    #numbered i previous steps
+    #name_png = lambda name_xvg, i: (name_xvg[:-4] +'%04d'+'.png') %(i)
+    name_png = lambda name_xvg: (name_xvg[:-4] +'.png')
+    
+    for iterator, file in enumerate(xvg_files):
+        data = read_file(file)
+        print_line_graph(data, name_png(file))
         
     
 
