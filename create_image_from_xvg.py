@@ -104,11 +104,15 @@ def list_of_xvg(pattern):
     For example:
     - RDF_POPC_01.xvg will be cut to RDF_POPC
     - RDF_POPC.xvg will be cut to RDF_POPC
+    Be aware, that it is not a goal to remove number from
+    final PNG files - this function is only used to clean
+    pattern and find all matching files.
     '''
     pattern = re.sub('_?[0-9]*(\.xvg)?$','',pattern)
-    print('I\'m using pattern: ', pattern)
+    print('I\'m using pattern for XVG files: ', pattern)
     allfiles = os.listdir()
-    rdf_files = list(filter(lambda fn: pattern in fn, allfiles))
+    rdf_files = list(filter(lambda fn: (pattern in fn) and fn.endswith('.xvg'),
+                            allfiles))
     #print(rdf_files)
 
     return rdf_files
@@ -121,10 +125,10 @@ def line_graphs(xvg, xtit = 'distance', ytit = 'RDF', maxrdf = 1, cols = [0,1]):
     titles and columns used.
     '''
     xvg_files = list_of_xvg(xvg)
-    print(xvg_files)
+    #print(xvg_files)
 
     #no need to add number, it's assumed that xvg are already
-    #numbered i previous steps
+    #numbered in previous steps
     #name_png = lambda name_xvg, i: (name_xvg[:-4] +'%04d'+'.png') %(i)
     name_png = lambda name_xvg: (name_xvg[:-4] +'.png')
     
@@ -135,14 +139,14 @@ def line_graphs(xvg, xtit = 'distance', ytit = 'RDF', maxrdf = 1, cols = [0,1]):
     
 
 
-'''
+
 if __name__ == '__main__':
     print('Give a filename to create graphs: ')
     file = input()
-    print_angles(read_file(file))
+    line_graphs(file)
     print('You can find crude representations of the angle \
-evolution in subsequent col## PNG files.')
-'''
+evolution in subsequent PNG files.')
+
 
     
 
